@@ -1,9 +1,12 @@
-
+CMakeLists.txt
 build/
 .cache/
 CMakeFiles/
 cmake_install.cmake
 CMakeCache.txt
-Makefile
 *.efi
 esp/
+.vscode/
+stare/
+*.efi
+*.o

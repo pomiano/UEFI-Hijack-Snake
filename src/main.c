@@ -1,54 +1,22 @@
-#include "uefi.h"
+#undef __STDC_VERSION__
+#include <efi.h>   
+#include <uefi.h>  
+#include "video.h"
+#include "video.h"
 
 
-struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL;
 
-typedef EFI_STATUS (EFIAPI *EFI_TEXT_STRING) (
-    struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    CHAR16 *String
- );
+int main(int argc, char **argv) {
 
-typedef EFI_STATUS (EFIAPI *EFI_TEXT_RESET) (
-    struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This,
-    BOOLEAN ExtendedVerification
-);
-
-typedef struct _EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL {
-    EFI_TEXT_RESET Reset;
-    EFI_TEXT_STRING OutputString;
-}EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL;
-
-typedef struct {
-  UINT64      Signature;
-  UINT32      Revision;
-  UINT32      HeaderSize;
-  UINT32      CRC32;
-  UINT32      Reserved;
- } EFI_TABLE_HEADER;
-
-
-typedef struct {
-  EFI_TABLE_HEADER                 Hdr;
-  CHAR16                           *FirmwareVendor;
-  UINT32                           FirmwareRevision;
-  void* ConsoleInHandle; 
-  void* ConIn;      
-  void* ConsoleOutHandle;
-  EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL  *ConOut;
-  void* StandardErrorHandle;
-  EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL  *StdErr;
-} EFI_SYSTEM_TABLE;
-
-
-EFI_STATUS EFIAPI efi_main(EFI_HANDLER ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
-    SystemTable->ConOut->Reset(SystemTable->ConOut, 0);
-
-    SystemTable->ConOut->OutputString(SystemTable->ConOut, (CHAR16*)u"SIEMA!\n");
-
-    while(1) {
-        __asm__("hlt");
+    resetScreen(0);
+    printf("Siema\n");
+    EFI_TIME mytime;
+    RT->GetTime(&mytime,0);
+    printf("%d %d %d\n", mytime.Hour, mytime.Minute, mytime.Second);
+    printf("%d %d %d\n", mytime.Day, mytime.Month, mytime.Year);
+    while(TRUE) {
+        getchar();
     }
-
     return 0;
 
 }
