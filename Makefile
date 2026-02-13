@@ -18,4 +18,5 @@ run: $(TARGET)
 	qemu-system-x86_64 \
 		-bios $(OVMF) \
 		-net none \
-		-drive file=fat:rw:$(BUILDDIR)/esp,media=disk,format=raw
+		-drive file=fat:rw:$(BUILDDIR)/esp,media=disk,format=raw \
+		-drive file=test_disk.img,if=ide,format=raw

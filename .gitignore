@@ -10,3 +10,4 @@ esp/
 stare/
 *.efi
 *.o
+*.img
