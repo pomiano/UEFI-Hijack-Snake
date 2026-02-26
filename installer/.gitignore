@@ -1,0 +1,13 @@
+CMakeLists.txt
+build/
+.cache/
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+*.efi
+esp/
+.vscode/
+stare/
+*.efi
+*.o
+*.img
