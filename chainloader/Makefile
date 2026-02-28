@@ -1,4 +1,4 @@
-TARGET = UEFIprobe.efi
+TARGET = chainloader.efi
 
 BUILDDIR = build
 

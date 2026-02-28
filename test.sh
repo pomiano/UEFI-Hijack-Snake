@@ -40,3 +40,13 @@ qemu-system-x86_64 \
     -drive format=raw,file=fat:rw:. \
     -net none \
     -m 256M
+
+
+
+snake.efi
+xxd snake.efi
+
+chainloader.efi
+xxd chainloader.efi
+
+installer.efi

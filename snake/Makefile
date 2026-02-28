@@ -1,15 +1,14 @@
-TARGET = Snake.efi
-
+#settings
+TARGET = snake.efi
 BUILDDIR = build
-
 SRCS = $(wildcard src/*.c)
+CFLAGS = -Iinclude -I../include -I../uefi
 
-CFLAGS = -Iinclude
-
-include uefi/Makefile
+include ../uefi/Makefile
 
 OVMF = $(shell find /usr/share -name OVMF.fd -o -name OVMF_CODE.fd | head -n 1)
 
+#rules
 run: $(TARGET)
 	@mkdir -p $(BUILDDIR)/esp/EFI/BOOT
 	@cp $(TARGET) $(BUILDDIR)/esp/EFI/BOOT/BOOTX64.EFI
