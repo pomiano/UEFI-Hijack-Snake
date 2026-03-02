@@ -5,7 +5,7 @@
 #undef __STDC_VERSION__
 #include <efi.h>   
 #include <uefi.h>  
-#include "snake.h"
+#include "/home/milosz/DANE/ProjektyWlasne/UEFI-probe/snake/include/snake.h"
 
 void initialize(GameSettings *settings,EFI_GRAPHICS_OUTPUT_PROTOCOL *gop, UINT32 gridSize, UINT32 hudHeight);
 void drawSnakeToBuffer(Snake *snake, GameSettings *settings);

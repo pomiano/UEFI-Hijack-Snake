@@ -4,7 +4,7 @@
 #include "video.h"
 #include "installer.h"
 
-#include "UEFIprobe_payload.h"
+#include "chainloader_payload.h"
 
 
 int main(int argc, char **argv) {

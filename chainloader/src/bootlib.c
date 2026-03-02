@@ -1,7 +1,7 @@
 #include "bootlib.h"
 
-extern unsigned char Snake_efi[];
-extern unsigned int Snake_efi_len;
+extern unsigned char snake_efi[];
+extern unsigned int snake_efi_len;
 
 
 
@@ -13,8 +13,8 @@ EFI_STATUS runEmbeddedSnake(EFI_HANDLE ParentImageHandle) {
         FALSE,
         ParentImageHandle,
         NULL,
-        Snake_efi,
-        Snake_efi_len,
+        snake_efi,
+        snake_efi_len,
         &snake_handle
     );
 
@@ -77,13 +77,14 @@ EFI_DEVICE_PATH_PROTOCOL* createFilePath(EFI_HANDLE DeviceHandle, CHAR16 *Path){
     );
     if(EFI_ERROR(status)) return NULL; 
 
-    path_len = (strlen(Path) + 1) * sizeof(CHAR16);
+    path_len = (strlen((CHAR8*)Path) + 1) * sizeof(CHAR16);
+    UINTN node_size = sizeof(EFI_DEVICE_PATH_PROTOCOL) + path_len;
     status = BS->AllocatePool(EfiLoaderData, sizeof(FILEPATH_DEVICE_PATH) + path_len, (void**)&file_node);
     if (EFI_ERROR(status)) return NULL;
 
     file_node->Header.Type = MEDIA_DEVICE_PATH;
     file_node->Header.SubType = MEDIA_FILEPATH_DP;
-    SetDevicePathNodeLength(&file_node->Header, sizeof(FILEPATH_DEVICE_PATH) + path_len);
+    SetDevicePathNodeLength(&file_node->Header, node_size);
     memcpy(file_node->PathName,Path, path_len);
 
     EFI_DEVICE_PATH_UTILITIES_PROTOCOL *DPUtils = NULL;
@@ -118,10 +119,10 @@ EFI_HANDLE findPartition(CHAR16 *fileName) {
 
     for(int i=0;i<handle_count;i++) {
 
-        EFI_FILE_PROTOCOL *root = OpenRoot(handle_buffer[i]);
+        EFI_FILE_PROTOCOL *root = openRoot(handle_buffer[i]);
         if (!root) continue;
         
-        EFI_FILE_PROTOCOL *target = OpenFile(root,fileName, EFI_FILE_MODE_READ);
+        EFI_FILE_PROTOCOL *target = openFile(root,fileName, EFI_FILE_MODE_READ);
         if(target) {
             printf("znaleziono windowsa\n");
             target->Close(target);
@@ -135,4 +136,47 @@ EFI_HANDLE findPartition(CHAR16 *fileName) {
     }
     BS->FreePool(handle_buffer);
     return NULL;
+}
+
+EFI_FILE_PROTOCOL* openRoot(EFI_HANDLE handle) {
+    EFI_GUID file_guid = EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID;
+    EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *file_protocol = NULL;
+    EFI_FILE_PROTOCOL *root = NULL;
+
+    EFI_STATUS status = BS->OpenProtocol(
+        handle,
+        &file_guid,
+        (void**)&file_protocol,
+        IM,
+        NULL,
+        EFI_OPEN_PROTOCOL_GET_PROTOCOL
+    );
+    if(EFI_ERROR(status)) return NULL;
+
+    
+    status = file_protocol->OpenVolume(
+        file_protocol,
+        &root
+    );
+    if(EFI_ERROR(status)) return NULL;
+
+    return root;
+
+}
+
+
+EFI_FILE_PROTOCOL* openFile(EFI_FILE_PROTOCOL *root, CHAR16 *path, UINT64 mode) {
+    EFI_FILE_PROTOCOL *target_file = NULL;
+    EFI_STATUS status = root->Open(
+        root,
+        &target_file,
+        path,
+        mode,
+        0
+    );
+    if(status == EFI_SUCCESS){
+        return target_file;
+    } 
+    return NULL;
+
 }

@@ -37,6 +37,7 @@ run: all $(FAKE_WIN_EFI)
 	mmd -i $(ESP_IMG) ::/EFI/Microsoft/Boot
 	mcopy -i $(ESP_IMG) $(FAKE_WIN_EFI) ::/EFI/Microsoft/Boot/bootmgfw.efi
 
+	sync
 	@echo "Launching qemu..."
 	qemu-system-x86_64 \
 		-bios $(OVMF) \
@@ -56,14 +57,14 @@ $(INSTALLER_EFI): $(CHAINLOADER_HEADER)
 	
 $(CHAINLOADER_HEADER): $(CHAINLOADER_EFI)
 	@mkdir -p $(INCLUDE_DIR)
-	xxd -i $< > $@
+	cd $(CHAINLOADER_DIR) && xxd -i chainloader.efi > ../$@
 
 $(CHAINLOADER_EFI): $(SNAKE_HEADER)
 	$(MAKE) -C $(CHAINLOADER_DIR)
 
 $(SNAKE_HEADER): $(SNAKE_EFI)
 	@mkdir -p $(INCLUDE_DIR)
-	xxd -i $< > $@
+	cd $(SNAKE_DIR) && xxd -i snake.efi > ../$@
 
 $(SNAKE_EFI):
 	$(MAKE) -C $(SNAKE_DIR)
@@ -75,3 +76,8 @@ clean:
 	$(MAKE) -C $(INSTALLER_DIR) clean
 	rm -rf $(INCLUDE_DIR)
 	rm -f $(INSTALLER_EFI)
+	rm -rf $(BUILD_DIR)
+	rm -f *.o */*.o */src/*.o
+	rm -f *.efi *.so
+
+	
