@@ -2,10 +2,8 @@
 #include <efi.h>   
 #include <uefi.h> 
 
-#include "video.h"
-
 int main(int argc, char **argv) {
-    resetScreen(0);
+    ST->ConOut->Reset(ST->ConOut, 0);
 
     printf("\n\n");
     printf("   ###########################################\n");

@@ -78,9 +78,13 @@ int main(int argc, char **argv) {
     show_game_over_screen(won, &settings,gop);
 
     BS->Stall(3000000);
+
+    resetScreen(0);
     
-    if(!won)
-        return 1;
+    if(won)
+        BS->Exit(IM, EFI_SUCCESS, 0, NULL);
+    else
+        BS->Exit(IM, EFI_ABORTED, 0, NULL);
 
     return 0;
 

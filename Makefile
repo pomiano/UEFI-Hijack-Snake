@@ -18,9 +18,10 @@ CHAINLOADER_HEADER = $(INCLUDE_DIR)/chainloader_payload.h
 #simulation
 ESP_IMG = build/esp.img
 DISK_SIZE_MB = 64
+OVMF = $(shell find /usr/share -name OVMF.fd -o -name OVMF_CODE.fd | head -n 1)
+
 
 .PHONY: all $(SNAKE_EFI) $(CHAINLOADER_EFI) $(FAKE_WIN_EFI)
-
 
 #rules
 run: all $(FAKE_WIN_EFI)
