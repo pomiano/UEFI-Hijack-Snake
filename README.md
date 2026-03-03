@@ -53,8 +53,16 @@ If you want to test the project in a safe, virtualized environment:
     make run
   ```
 * **Result:** This command is all-in-one. It compiles the code (if not already built), creates a virtual disk image (`esp.img`) formatted as FAT32, and launches the **QEMU emulator** with OVMF firmware automatically.
-
-### 3. The Hijack Protocol (In Shell)
+  
+### 3. Cleanup
+To remove all compiled binaries, object files, and the virtual disk image:
+* **Command:**
+  ```bash
+    make clean
+  ```
+This leaves your directory clean, keeping only the source code and documentation
+  
+### 4. The Hijack Protocol (In Shell)
 Once the UEFI Shell appears in QEMU:
 1.  **Mount the drive:** Type `FS0:` to enter the simulated EFI partition.
 2.  **Infect the system:** Run `installer.efi` to perform the **Boot Hijacking**. This renames the original loader and installs the Snake-Gate.
