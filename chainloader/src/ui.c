@@ -28,6 +28,7 @@ void displayWelcome() {
 }
 
 void displaySucces() {
+    ST->ConOut->SetAttribute(ST->ConOut, 0x1F);
     ST->ConOut->Reset(ST->ConOut,0);
 
     ST->ConOut->SetAttribute(ST->ConOut, 0x1A);
@@ -38,5 +39,5 @@ void displaySucces() {
     printf(" [!] Synchronizing UEFI variables... OK\n");
     printf(" [!] Verification successful. Executing payload...\n");
 
-    BS->Stall(5000000);
+    BS->Stall(10000000);
 }
