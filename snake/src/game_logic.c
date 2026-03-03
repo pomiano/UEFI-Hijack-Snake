@@ -63,7 +63,7 @@ BOOLEAN moveSnake(Snake *snake, Apple *apple, EFI_RNG_PROTOCOL *erp, GameSetting
     
     BOOLEAN ateApple = checkCollisionWithApple(new_head, apple);    
     if(ateApple){
-        snake->score+=10;
+        snake->score++;
         if(snake->length<MAX_SNAKE_LENGTH)
             snake->length++;
         apple->active = FALSE;
