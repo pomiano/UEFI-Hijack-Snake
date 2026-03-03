@@ -12,8 +12,6 @@ This project simulates a firmware-level "virus" (Bootkit) that targets the **EFI
 3.  **Mandatory Recovery (The Payload):** The system access is "locked." To unlock the boot process, the user must manually guide a "Data-Stream Collector" (Snake) to verify system integrity.
 4.  **Chainloading (The Handoff):** Once the user collects 10 data fragments (apples), the bootkit reads the original Windows loader from the disk into RAM and executes it using `BS->LoadImage` and `BS->StartImage`.
 
-
-
 ## 🛠️ Technical Implementation
 
 * **Language:** C.
@@ -42,16 +40,18 @@ The `Makefile` is configured to handle both real-hardware deployment and QEMU em
 
 ### 1. Building for Real Hardware (Pendrive)
 If you want to prepare the files for a physical machine:
-* **Command:** ```bash
+* **Command:**
+  ```bash
     make all
-    ```
+  ```
 * **Result:** This compiles all source code and generates the final binaries, including `installer.efi`. You can then manually copy these files to a FAT32-formatted USB drive to test the hijack on a real system (with Secure Boot disabled).
 
 ### 2. Automated Simulation (QEMU)
 If you want to test the project in a safe, virtualized environment:
-* **Command:** ```bash
+* **Command:**
+  ```bash
     make run
-    ```
+  ```
 * **Result:** This command is all-in-one. It compiles the code (if not already built), creates a virtual disk image (`esp.img`) formatted as FAT32, and launches the **QEMU emulator** with OVMF firmware automatically.
 
 ### 3. The Hijack Protocol (In Shell)
