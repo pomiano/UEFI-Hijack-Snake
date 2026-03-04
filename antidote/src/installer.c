@@ -2,10 +2,6 @@
 
 
 
-extern unsigned char chainloader_efi[];
-extern unsigned int chainloader_efi_len;
-
-
 EFI_HANDLE findPartition(CHAR16 *fileName) {
     EFI_GUID file_guid = EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID;
     EFI_HANDLE *handle_buffer;
@@ -143,3 +139,19 @@ EFI_STATUS writeFileToRoot(EFI_FILE_PROTOCOL *root, CHAR16 *fileName, VOID *buff
 
 }
 
+
+EFI_STATUS delete_file(EFI_FILE_PROTOCOL *root, CHAR16 *fileName){
+    EFI_FILE_PROTOCOL *file = NULL;
+    EFI_STATUS status = root->Open(
+        root, 
+        &file, 
+        fileName,
+        EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE,
+        0
+    );
+    if(status == EFI_SUCCESS && file != NULL){
+        status = file->Delete(file);
+    }
+
+    return status;
+}

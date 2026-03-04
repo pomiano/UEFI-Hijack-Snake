@@ -2,6 +2,7 @@
 SNAKE_DIR = snake
 INSTALLER_DIR = installer
 CHAINLOADER_DIR = chainloader
+ANTIDOTE_DIR = antidote
 INCLUDE_DIR = include
 BUILD_DIR = build
 FAKE_WIN_DIR = fake_win
@@ -9,6 +10,7 @@ FAKE_WIN_DIR = fake_win
 SNAKE_EFI = $(SNAKE_DIR)/snake.efi
 CHAINLOADER_EFI = $(CHAINLOADER_DIR)/chainloader.efi
 INSTALLER_EFI = $(INSTALLER_DIR)/installer.efi
+ANTIDOTE_EFI = $(ANTIDOTE_DIR)/antidote.efi
 FAKE_WIN_EFI = $(FAKE_WIN_DIR)/fake_windows.efi
 
 SNAKE_HEADER = $(INCLUDE_DIR)/snake_payload.h
@@ -43,6 +45,7 @@ run: all $(FAKE_WIN_EFI)
 		-bios $(OVMF) \
 		-drive format=raw,file=$(ESP_IMG) \
 		-drive format=raw,file=fat:rw:$(INSTALLER_DIR) \
+		-drive format=raw,file=fat:rw:$(ANTIDOTE_DIR) \
 		-m 256M -net none
 
 
@@ -50,7 +53,7 @@ $(FAKE_WIN_EFI):
 	$(MAKE) -C $(FAKE_WIN_DIR)
 
 
-all: $(INSTALLER_EFI)
+all: $(INSTALLER_EFI) $(ANTIDOTE_EFI)
 
 $(INSTALLER_EFI): $(CHAINLOADER_HEADER)
 	$(MAKE) -C $(INSTALLER_DIR)
@@ -69,11 +72,15 @@ $(SNAKE_HEADER): $(SNAKE_EFI)
 $(SNAKE_EFI):
 	$(MAKE) -C $(SNAKE_DIR)
 
+$(ANTIDOTE_EFI):
+	$(MAKE) -C $(ANTIDOTE_DIR)
+
 
 clean:
 	$(MAKE) -C $(SNAKE_DIR) clean
 	$(MAKE) -C $(CHAINLOADER_DIR) clean
 	$(MAKE) -C $(INSTALLER_DIR) clean
+	$(MAKE) -C $(ANTIDOTE_DIR) clean
 	rm -rf $(INCLUDE_DIR)
 	rm -f $(INSTALLER_EFI)
 	rm -rf $(BUILD_DIR)
