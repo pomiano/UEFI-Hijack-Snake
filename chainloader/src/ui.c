@@ -40,4 +40,7 @@ void displaySucces() {
     printf(" [!] Verification successful. Executing payload...\n");
 
     BS->Stall(10000000);
+
+    ST->ConOut->SetAttribute(ST->ConOut, 0x07);
+    ST->ConOut->Reset(ST->ConOut,0);
 }
