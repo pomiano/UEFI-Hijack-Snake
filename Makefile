@@ -3,7 +3,8 @@ SNAKE_DIR = snake
 INSTALLER_DIR = installer
 CHAINLOADER_DIR = chainloader
 ANTIDOTE_DIR = antidote
-INCLUDE_DIR = include
+COMMON_DIR = common
+INCLUDE_DIR = $(COMMON_DIR)/include
 BUILD_DIR = build
 FAKE_WIN_DIR = fake_win
 
@@ -81,7 +82,8 @@ clean:
 	$(MAKE) -C $(CHAINLOADER_DIR) clean
 	$(MAKE) -C $(INSTALLER_DIR) clean
 	$(MAKE) -C $(ANTIDOTE_DIR) clean
-	rm -rf $(INCLUDE_DIR)
+	rm -f $(SNAKE_HEADER)
+	rm -f $(CHAINLOADER_HEADER)
 	rm -f $(INSTALLER_EFI)
 	rm -rf $(BUILD_DIR)
 	rm -f *.o */*.o */src/*.o
