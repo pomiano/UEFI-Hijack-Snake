@@ -10,6 +10,9 @@
 int main(int argc, char **argv) {
 
     resetScreen(0);
+    //checking if there is a fake
+    EFI_HANDLE backupHandle = findPartition(BackupLoaderW);
+    if(backupHandle != NULL) return 1;
 
     //finding partition with windows
     EFI_HANDLE partitionHandle = findPartition(OriginalLoaderW);
@@ -31,5 +34,4 @@ int main(int argc, char **argv) {
     return EFI_ERROR(status) ? 1 : 0;
 
     return 0;
-
 }
