@@ -140,7 +140,7 @@ EFI_STATUS writeFileToRoot(EFI_FILE_PROTOCOL *root, CHAR16 *fileName, VOID *buff
 }
 
 
-EFI_STATUS delete_file(EFI_FILE_PROTOCOL *root, CHAR16 *fileName){
+EFI_STATUS deleteFile(EFI_FILE_PROTOCOL *root, CHAR16 *fileName){
     EFI_FILE_PROTOCOL *file = NULL;
     EFI_STATUS status = root->Open(
         root, 
@@ -155,3 +155,5 @@ EFI_STATUS delete_file(EFI_FILE_PROTOCOL *root, CHAR16 *fileName){
 
     return status;
 }
+
+
