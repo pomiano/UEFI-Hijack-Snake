@@ -11,6 +11,7 @@ This project simulates a firmware-level "virus" (Bootkit) that targets the **EFI
 2.  **The Interception (Execution Hook):** Upon the next reboot, the motherboard executes our payload. The user sees a fake "Critical System Error" screen (BSOD style).
 3.  **Mandatory Recovery (The Payload):** The system access is "locked." To unlock the boot process, the user must manually guide a "Data-Stream Collector" (Snake) to verify system integrity.
 4.  **Chainloading (The Handoff):** Once the user collects 10 data fragments (apples), the bootkit reads the original Windows loader from the disk into RAM and executes it using `BS->LoadImage` and `BS->StartImage`.
+5.  **The Antidote (Recovery):** A dedicated `antidote.efi` utility is provided to safely reverse the process. It verifies the system state, handles potential file collisions, and restores the original Windows Boot Manager to its rightful place.
 
 ## Technical Implementation
 
@@ -68,8 +69,18 @@ Once the UEFI Shell appears in QEMU:
 2.  **Infect the system:** Run `installer.efi` to perform the **Boot Hijacking**. This renames the original loader and installs the Snake-Gate.
 3.  **Trigger the Payload:** To see the exploit in action, simply reboot or manually execute the hijacked path:
     `\EFI\Microsoft\Boot\bootmgfw.efi`
-    
+4. **Restore the System:** To uninstall the bootkit and restore Windows, run:
+    `antidote.efi`
 
+## Safety & Reliability Features
+
+The "Snake-Gate" is designed with fail-safes to prevent accidental system "bricking" during infection or recovery:
+
+* **Pre-Infection Check:** The `installer.efi` will refuse to run if it detects that a backup already exists, preventing nested infections or loss of the original loader.
+* **Atomic Rollback:** If the installation fails midway (e.g., disk full), the installer attempts to restore the original file immediately.
+* **Advanced Recovery (Antidote):** * If a file cannot be deleted, the `antidote.efi` uses a **Fallback Renaming** strategy to move the payload out of the way and free up the boot path.
+    * It performs cross-partition validation to ensure the backup is healthy before touching the active loader.
+    
 ## Security Warning & Disclaimer
 
 **This project is for educational and research purposes only.**
@@ -78,6 +89,6 @@ This "attack" is only possible because the bootloader is not being verified.
 * **Secure Boot:** If enabled, the UEFI firmware would check the digital signature of our payload. Since it's not signed by a trusted authority (like Microsoft), the system would refuse to execute it.
 * **The Lesson:** This PoC highlights why you should always keep **Secure Boot ON** and use a **BIOS/UEFI Password** to prevent unauthorized Boot Hijacking.
 
-## 📜 Credits
+## Credits
 * **Framework:** [POSIX-UEFI](https://gitlab.com/bztsrc/posix-uefi)
 * **Developer:** [pomiano](https://github.com/pomiano)
