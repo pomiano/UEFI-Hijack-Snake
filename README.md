@@ -2,7 +2,7 @@
 
 This project is a functional **UEFI Bootkit Proof-of-Concept** that intercepts the Windows boot sequence. It demonstrates how a system's chain of trust can be compromised when **Secure Boot** is disabled, forcing the user to complete a "system repair" (Snake game) before the OS is allowed to load.
 
-## 💀 The Concept: "Gamified" Boot Hijacking
+## The Concept: "Gamified" Boot Hijacking
 
 This project simulates a firmware-level "virus" (Bootkit) that targets the **EFI System Partition (ESP)**. Unlike standard malware, it operates before the Operating System even starts, making it invisible to traditional antivirus software.
 
@@ -12,7 +12,7 @@ This project simulates a firmware-level "virus" (Bootkit) that targets the **EFI
 3.  **Mandatory Recovery (The Payload):** The system access is "locked." To unlock the boot process, the user must manually guide a "Data-Stream Collector" (Snake) to verify system integrity.
 4.  **Chainloading (The Handoff):** Once the user collects 10 data fragments (apples), the bootkit reads the original Windows loader from the disk into RAM and executes it using `BS->LoadImage` and `BS->StartImage`.
 
-## 🛠️ Technical Implementation
+## Technical Implementation
 
 * **Language:** C.
 * **Framework:** Built using the [POSIX-UEFI library](https://gitlab.com/bztsrc/posix-uefi) by bzt.
@@ -20,7 +20,7 @@ This project simulates a firmware-level "virus" (Bootkit) that targets the **EFI
 * **Memory Management:** Uses `AllocatePool` and `fread` to load the original OS loader into a memory buffer to bypass `DevicePath` complexity and firmware-specific bugs.
 * **Graphics:** Uses the **Graphics Output Protocol (GOP)** for the Snake module and ANSI escape sequences for the custom error screen.
 
-## 📸 Screenshots
+## Screenshots
 
 ### 1. The Hijack (Fake Error)
 *The user thinks their system is broken. In reality, our bootkit is in full control.*
@@ -34,7 +34,7 @@ This project simulates a firmware-level "virus" (Bootkit) that targets the **EFI
 *Success screen appearing just before the real Windows starts.*
 ![Success Screen](screens/screen_success.png)
 
-## 🚀 Build & Simulation Guide
+## Build & Simulation Guide
 
 The `Makefile` is configured to handle both real-hardware deployment and QEMU emulation.
 
@@ -70,7 +70,7 @@ Once the UEFI Shell appears in QEMU:
     `\EFI\Microsoft\Boot\bootmgfw.efi`
     
 
-## ⚠️ Security Warning & Disclaimer
+## Security Warning & Disclaimer
 
 **This project is for educational and research purposes only.**
 
